@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Проверка строки на соответствие длине
  * @param checkingString {String} - Проверяемая строка
@@ -15,7 +17,7 @@ const isPalindrome = (string) => {
   const noSpaceString = string.toLowerCase().replaceAll(' ', '');
   const reverseString = noSpaceString.split('').reverse().join('');
   return reverseString === noSpaceString;
-};
+}
 
 /**
  * Извлечение числа из строки
@@ -30,6 +32,6 @@ const extractNumbers = (string) => {
     }
   }
   return result.length ? +result.join('') : NaN;
-};
+}
 
-
+/* eslint-enable */

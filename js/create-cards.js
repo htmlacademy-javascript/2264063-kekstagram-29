@@ -4,7 +4,7 @@ import {
   getRandomElementFromArray,
   getRandomInteger
 } from './utils.js';
-import {getData} from './mocks.js';
+import * as data from './mocks.js';
 /**
  * @typedef {object} card
  * @property {number} id,
@@ -22,41 +22,41 @@ import {getData} from './mocks.js';
  * @property {string} name
  */
 
-// Получаем данные для карточек
-const data = getData();
-
 // Объявление генераторов id
 const generateCardId = createRandomIdFromRangeGenerator(1, 25);
-const generateCommentId = getUniqueInteger();
+const generateCommentId = getUniqueInteger(1);
 
 /**
  * Создаёт объект комментария
+ * @param {string} userName
+ * @param {string} message
  * @return {comment}
  */
-const createComment = () => {
+const createComment = ({userName, message}) => {
   const commentId = generateCommentId();
-  const commentMessage = `${getRandomElementFromArray(data.COMMENT_MESSAGES)} ${getRandomInteger(0, 1) ? `\n${getRandomElementFromArray(data.COMMENT_MESSAGES)}` : ''}`;
   return {
     id: commentId,
     avatar: `img/avatar-${getRandomInteger(1, 6)}}.svg`,
-    message: commentMessage,
-    name: getRandomElementFromArray(data.USER_NAMES),
+    message: message,
+    name: userName,
   };
 };
 
 /**
  * Создаёт объект карточки с комментариями
+ * @param {string} description
+ * @param {number} countOfLikes
+ * @param {array<comment>} comments
  * @return {card}
  */
-const createCard = () => {
+const createCard = ({description, countOfLikes, comments}) => {
   const cardId = generateCardId();
-  const commentsArray = Array.from({length: getRandomInteger(0, 30)}, createComment);
   return {
     id: cardId,
     url: `photos/${cardId}.jpg`,
-    description: getRandomElementFromArray(data.CARD_DESCRIPTIONS),
-    likes: getRandomInteger(15, 200),
-    comments: commentsArray,
+    description: description,
+    likes: countOfLikes,
+    comments: comments,
   };
 };
 
@@ -65,4 +65,18 @@ const createCard = () => {
  * @param {number} cardCount
  * @return {array<card>}
  */
-export const createCards = (cardCount) => Array.from({length: cardCount}, createCard);
+export const createCards = (cardCount) => Array.from({length: cardCount}, () => {
+  const comments = Array.from({length: getRandomInteger(0, 30)}, () => {
+    const commentSettings = {
+      userName: getRandomElementFromArray(data.USER_NAMES),
+      message: `${getRandomElementFromArray(data.COMMENT_MESSAGES)} ${getRandomInteger(0, 1) ? `\n${getRandomElementFromArray(data.COMMENT_MESSAGES)}` : ''}`,
+    };
+    return createComment(commentSettings);
+  });
+  const cardSettings = {
+    description: getRandomElementFromArray(data.CARD_DESCRIPTIONS),
+    countOfLikes: getRandomInteger(15, 200),
+    comments: comments,
+  };
+  return createCard(cardSettings);
+});

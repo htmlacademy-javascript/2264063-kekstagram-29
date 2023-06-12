@@ -1,28 +1,33 @@
-/* eslint-disable */
-
+/* eslint-disable */ //TODO: Убрать
 /**
  * Проверка строки на соответствие длине
- * @param checkingString {String} - Проверяемая строка
- * @param countOfChars {Number} - Максимальная длина строки
- * @return {Boolean}
+ * @param checkingString {string} - Проверяемая строка
+ * @param countOfChars {number} - Максимальная длина строки
+ * @return {boolean}
  */
 const isValidString = (checkingString, countOfChars) => checkingString.length <= countOfChars;
 
 /**
  * Проверка строки на палиндром
- * @param string {String} - Проверяемая строка
- * @return {Boolean}
+ * @param string {string} - Проверяемая строка
+ * @return {boolean}
  */
 const isPalindrome = (string) => {
-  const noSpaceString = string.toLowerCase().replaceAll(' ', '');
-  const reverseString = noSpaceString.split('').reverse().join('');
-  return reverseString === noSpaceString;
-}
+  let result = true;
+  string = string.replaceAll(' ', '');
+  for (let i = 0; i < string.length / 2; i++) {
+    if (!(string[i] === string[string.length - 1 - i])) {
+      result = false;
+      break;
+    }
+  }
+  return result;
+};
 
 /**
  * Извлечение числа из строки
- * @param string {String | Number}
- * @return {Number}
+ * @param string {string | number}
+ * @return {number}
  */
 const extractNumbers = (string) => {
   const result = [];
@@ -32,6 +37,5 @@ const extractNumbers = (string) => {
     }
   }
   return result.length ? +result.join('') : NaN;
-}
-
-/* eslint-enable */
+};
+/* eslint-enable */ //TODO: Убрать

@@ -1,5 +1,5 @@
 /**
- * @type array <string>
+ * @type array<string>
  */
 export const COMMENT_MESSAGES = [
   'Всё отлично!',
@@ -11,7 +11,7 @@ export const COMMENT_MESSAGES = [
 ];
 
 /**
- * @type array <string>
+ * @type array<string>
  */
 export const USER_NAMES = [
   'Артём',
@@ -24,7 +24,7 @@ export const USER_NAMES = [
 ];
 
 /**
- * @type array <string>
+ * @type array<string>
  */
 export const CARD_DESCRIPTIONS = [
   'Также как синтетическое тестирование влечет за собой процесс внедрения и модернизации вывода текущих активов. Являясь всего лишь частью общей картины, независимые государства представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть обнародованы. Есть над чем задуматься: сторонники тоталитаризма в науке могут быть разоблачены.',

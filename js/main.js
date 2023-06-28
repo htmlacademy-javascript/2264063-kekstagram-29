@@ -1,5 +1,4 @@
 import {createCards} from './create-cards.js';
+import {renderCards} from './render-cards.js';
 
-/*eslint-disable*/ // TODO: Удалить
-console.log(createCards(25));
-/*eslint-enable*/ // TODO: Удалить
+renderCards(createCards(25));

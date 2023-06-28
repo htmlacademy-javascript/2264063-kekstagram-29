@@ -86,3 +86,10 @@ export const createRandomIdFromRangeGenerator = (min, max) => {
  */
 export const getRandomElementFromArray = (arr) => arr[getRandomInteger(0, arr.length - 1)];
 
+
+/**
+ * Возвращает склонированное содержимое шаблона
+ * @param templateId {string}
+ * @return {HTMLElement}
+ */
+export const getCloneFromTemplate = (templateId) => document.querySelector(templateId).content.children[0].cloneNode(true);

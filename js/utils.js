@@ -90,6 +90,6 @@ export const getRandomElementFromArray = (arr) => arr[getRandomInteger(0, arr.le
 /**
  * Возвращает склонированное содержимое шаблона
  * @param templateId {string}
- * @return {HTMLElement}
+ * @return {HTMLElement | Null}
  */
-export const getCloneFromTemplate = (templateId) => document.querySelector(templateId).content.children[0].cloneNode(true);
+export const getCloneFromTemplate = (templateId) => document.querySelector(templateId) ? document.querySelector(templateId).content.children[0].cloneNode(true) : null;

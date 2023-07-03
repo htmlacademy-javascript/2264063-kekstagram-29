@@ -27,20 +27,21 @@ const createCard = ({url, description, likes, comments}) => {
  */
 export const renderCards = (cardsData) => {
   const cardsContainer = document.querySelector('.pictures');
-  if (cardsContainer) {
-    const cards = document.createDocumentFragment();
-    const cardsArray = cardsData.map((cardInfo) => {
-      const card = createCard(cardInfo);
-      cards.append(card);
-      return card;
-    });
-    cardsContainer.append(cards);
-    document.addEventListener('click', (evt) => {
-      evt.preventDefault();
-      const cardIndex = cardsArray.indexOf(evt.target.closest('.picture'));
-      if (cardIndex >= 0) {
-        openModalWithData(cardsData[cardIndex]);
-      }
-    });
+  if (!cardsContainer) {
+    return;
   }
+  const cards = document.createDocumentFragment();
+  const cardsArray = cardsData.map((cardInfo) => {
+    const card = createCard(cardInfo);
+    cards.append(card);
+    return card;
+  });
+  cardsContainer.append(cards);
+  document.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    const cardIndex = cardsArray.indexOf(evt.target.closest('.picture'));
+    if (cardIndex >= 0) {
+      openModalWithData(cardsData[cardIndex]);
+    }
+  });
 };

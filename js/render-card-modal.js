@@ -69,7 +69,7 @@ const closeModalFromClickHandler = (evt) => {
 
 /**
  * Обрабатывает закрытие модального окна через нажатие клавиши Esc
- * @param {Event} evt
+ * @param {KeyboardEvent} evt
  */
 const closeModalFromKeyHandler = (evt) => {
   if (evt.key === 'Escape') {

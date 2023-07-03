@@ -5,6 +5,7 @@ import {
   getRandomInteger
 } from './utils.js';
 import * as data from './mocks.js';
+
 /**
  * @typedef {object} card
  * @property {number} id,
@@ -36,7 +37,7 @@ const createComment = ({userName, message}) => {
   const commentId = generateCommentId();
   return {
     id: commentId,
-    avatar: `img/avatar-${getRandomInteger(1, 6)}}.svg`,
+    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: message,
     name: userName,
   };

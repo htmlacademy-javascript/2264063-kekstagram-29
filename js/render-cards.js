@@ -1,4 +1,5 @@
 import {getCloneFromTemplate} from './utils.js';
+import {openModalWithData} from './render-card-modal.js';
 
 /**
  * Возвращает карточку с заполненными данными
@@ -10,21 +11,33 @@ import {getCloneFromTemplate} from './utils.js';
  */
 const createCard = ({url, description, likes, comments}) => {
   const template = getCloneFromTemplate('#picture');
-  template.querySelector('.picture__img').src = url;
-  template.querySelector('.picture__img').alt = description;
-  template.querySelector('.picture__likes').textContent = likes;
-  template.querySelector('.picture__comments').textContent = comments.length;
-  return template;
+  if (template) {
+    template.querySelector('.picture__img').src = url;
+    template.querySelector('.picture__img').alt = description;
+    template.querySelector('.picture__likes').textContent = likes;
+    template.querySelector('.picture__comments').textContent = comments.length;
+    return template;
+  }
+  throw new Error('Template does not exist.');
 };
 
 /**
  * Отрисовывает карточки по переданным данным
- * @param cardData {array<object>}
+ * @param cardsData {array<object>}
  */
-export const renderCards = (cardData) => {
-  const cards = document.createDocumentFragment();
-  cardData.forEach((cardInfo) => cards.append(createCard(cardInfo)));
+export const renderCards = (cardsData) => {
   const cardsContainer = document.querySelector('.pictures');
+  if (!cardsContainer) {
+    return;
+  }
+  const cards = document.createDocumentFragment();
+  cardsData.forEach((cardInfo) => {
+    const card = createCard(cardInfo);
+    card.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      openModalWithData(cardInfo);
+    });
+    cards.append(card);
+  });
   cardsContainer.append(cards);
 };
-

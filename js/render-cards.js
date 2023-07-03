@@ -31,17 +31,13 @@ export const renderCards = (cardsData) => {
     return;
   }
   const cards = document.createDocumentFragment();
-  const cardsArray = cardsData.map((cardInfo) => {
+  cardsData.forEach((cardInfo) => {
     const card = createCard(cardInfo);
+    card.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      openModalWithData(cardInfo);
+    });
     cards.append(card);
-    return card;
   });
   cardsContainer.append(cards);
-  document.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    const cardIndex = cardsArray.indexOf(evt.target.closest('.picture'));
-    if (cardIndex >= 0) {
-      openModalWithData(cardsData[cardIndex]);
-    }
-  });
 };

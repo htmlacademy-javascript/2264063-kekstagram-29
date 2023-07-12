@@ -85,7 +85,6 @@ const configureModal = (cardInfo) => {
 const clickAndKeyHandler = (evt, handler) => {
   const isOverlay = evt.target.classList.contains('overlay');
   const isCloseButton = evt.target.classList.contains('cancel');
-
   if (isOverlay || isCloseButton || evt.key === 'Escape') {
     closeModal();
     document.removeEventListener('keydown', handler);
@@ -108,6 +107,7 @@ export const openModalWithData = (cardData) => {
     removeMoreButtonListener();
     clickAndKeyHandler(evt, closeModalHandler);
   };
-  modal.addEventListener('click', closeModalHandler, {once: true});
-  document.addEventListener('keydown', closeModalHandler, {once: true});
+
+  modal.addEventListener('click', closeModalHandler);
+  document.addEventListener('keydown', closeModalHandler);
 };

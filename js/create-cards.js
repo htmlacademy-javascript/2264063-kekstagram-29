@@ -33,15 +33,12 @@ const generateCommentId = getUniqueInteger(1);
  * @param {string} message
  * @return {comment}
  */
-const createComment = ({userName, message}) => {
-  const commentId = generateCommentId();
-  return {
-    id: commentId,
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: message,
-    name: userName,
-  };
-};
+const createComment = ({userName, message}) => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: message,
+  name: userName,
+});
 
 /**
  * Создаёт объект карточки с комментариями

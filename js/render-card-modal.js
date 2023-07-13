@@ -1,20 +1,9 @@
-const modal = document.querySelector('.big-picture');
-const COMMENT_VIEW_INCREMENT = 5;
-/**
- * Открывает модальное окно
- */
-const openModal = () => {
-  modal.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-};
+import {Modal} from './modal.js';
+import {getCloneFromTemplate} from './utils.js';
 
-/**
- * Закрывает модальное окно
- */
-const closeModal = () => {
-  document.body.classList.remove('modal-open');
-  modal.classList.add('hidden');
-};
+const modalElement = document.querySelector('.big-picture');
+const COMMENT_VIEW_INCREMENT = 5;
+const modal = new Modal(modalElement);
 
 /**
  * Создаёт ноду комментария
@@ -22,14 +11,14 @@ const closeModal = () => {
  * @return {HTMLElement}
  */
 const createComment = (commentData) => {
-  const comment = document.createElement('li');
-  comment.classList.add('social__comment');
-  comment.innerHTML = `<img class="social__picture" src="${commentData.avatar}" alt="${commentData.name}" width="35" height="35">`;
-  const commentText = document.createElement('p');
-  commentText.classList.add('social__text');
-  commentText.innerText = commentData.message;
-  comment.append(commentText);
-  return comment;
+  const template = getCloneFromTemplate('#comment');
+  if (template) {
+    template.querySelector('.social__picture').src = commentData.avatar;
+    template.querySelector('.social__picture').alt = commentData.name;
+    template.querySelector('.social__text').textContent = commentData.message;
+    return template;
+  }
+  throw new Error('Template does not exist.');
 };
 
 /**
@@ -40,7 +29,8 @@ const createComment = (commentData) => {
 const appendComments = (comments, increment) => {
   let count = increment;
   return () => {
-    const commentsContainer = modal.querySelector('.social__comments');
+    const commentsFragment = document.createDocumentFragment();
+    const commentsContainer = modal.el.querySelector('.social__comments');
     const commentsLoader = document.querySelector('.comments-loader');
     const commentsCountStart = document.querySelector('.comments-count-start');
     commentsLoader.classList.remove('hidden');
@@ -54,8 +44,9 @@ const appendComments = (comments, increment) => {
     }
     commentsContainer.innerHTML = '';
     for (let i = 0; i < Math.min(count, comments.length); i++) {
-      commentsContainer.append(createComment(comments[i]));
+      commentsFragment.append(createComment(comments[i]));
     }
+    commentsContainer.append(commentsFragment);
     count += increment;
   };
 };
@@ -65,33 +56,15 @@ const appendComments = (comments, increment) => {
  * @param {card} cardInfo - данные карточки
  */
 const configureModal = (cardInfo) => {
-  modal.querySelector('.big-picture__img img').src = cardInfo.url;
-  modal.querySelector('.big-picture__img img').alt = cardInfo.description;
-  modal.querySelector('.likes-count').textContent = cardInfo.likes;
-  modal.querySelector('.social__caption').textContent = cardInfo.description;
-  modal.querySelector('.comments-count').textContent = cardInfo.comments.length;
-  const appendHandler = appendComments(cardInfo.comments, COMMENT_VIEW_INCREMENT);
-  appendHandler();
-  modal.querySelector('.comments-loader').addEventListener('click', appendHandler);
-  return () => modal.querySelector('.comments-loader').removeEventListener('click', appendHandler);
+  modal.el.querySelector('.big-picture__img img').src = cardInfo.url;
+  modal.el.querySelector('.big-picture__img img').alt = cardInfo.description;
+  modal.el.querySelector('.likes-count').textContent = cardInfo.likes;
+  modal.el.querySelector('.social__caption').textContent = cardInfo.description;
+  modal.el.querySelector('.comments-count').textContent = cardInfo.comments.length;
+  const incrementComments = appendComments(cardInfo.comments, COMMENT_VIEW_INCREMENT);
+  incrementComments();
+  modal.addListener(modal.el.querySelector('.comments-loader'), 'click', incrementComments);
 };
-
-
-/**
- * Обрабатывает закрытие модального окна через клик мыши
- * @param {Event | KeyboardEvent} evt
- * @param {function} handler - обработчик, который нужно удалить
- */
-const clickAndKeyHandler = (evt, handler) => {
-  const isOverlay = evt.target.classList.contains('overlay');
-  const isCloseButton = evt.target.classList.contains('cancel');
-  if (isOverlay || isCloseButton || evt.key === 'Escape') {
-    closeModal();
-    document.removeEventListener('keydown', handler);
-    modal.removeEventListener('click', handler);
-  }
-};
-
 
 /**
  * Открывает модальное окно с данными
@@ -101,13 +74,6 @@ export const openModalWithData = (cardData) => {
   if (!modal) {
     return;
   }
-  const removeMoreButtonListener = configureModal(cardData);
-  openModal();
-  const closeModalHandler = (evt) => {
-    removeMoreButtonListener();
-    clickAndKeyHandler(evt, closeModalHandler);
-  };
-
-  modal.addEventListener('click', closeModalHandler);
-  document.addEventListener('keydown', closeModalHandler);
+  configureModal(cardData);
+  modal.open();
 };

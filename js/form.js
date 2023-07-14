@@ -1,4 +1,5 @@
 import {Modal} from './modal.js';
+import {trimTwoSpaces} from './utils.js';
 import './validation.js';
 
 const form = document.querySelector('#upload-select-image');
@@ -21,20 +22,10 @@ const uploadImageHandler = () => {
   modal.addListener(...stopPropagation(form.hashtags));
 };
 
-/**
- * Обработчик ввода в поле хэштегов
- */
-const hashtagsInputHandler = () => {
-  const lastTwoCharsOfInput = form.hashtags.value[form.hashtags.value.length - 1] + form.hashtags.value[form.hashtags.value.length - 2];
-  if (lastTwoCharsOfInput === '  ') {
-    form.hashtags.value = `${form.hashtags.value.trim()} `;
-  }
-};
-
 form.filename.addEventListener('change', uploadImageHandler);
 modal.onClose = () => form.reset();
 
-modal.addListener(form.hashtags, 'input', hashtagsInputHandler);
+modal.addListener(form.hashtags, 'input', trimTwoSpaces);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   // отправка данных

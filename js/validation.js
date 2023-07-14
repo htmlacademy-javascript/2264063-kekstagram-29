@@ -38,7 +38,7 @@ const isValidHashtags = (value) => {
  * @return {boolean}
  */
 const isHashtagsDontRepeat = (value) => {
-  const hashtagsArray = value.split(' ');
+  const hashtagsArray = value.trim().split(' ');
   return new Set(hashtagsArray).size === hashtagsArray.length;
 };
 

@@ -1,7 +1,7 @@
 import {Modal} from './modal.js';
 import {getCloneFromTemplate} from './utils.js';
 
-const COMMENT_VIEW_INCREMENT = 5;
+const COMMENT_INCREMENT_COUNT = 5;
 const modal = new Modal(document.querySelector('.big-picture'));
 
 /**
@@ -25,7 +25,7 @@ const createComment = (commentData) => {
  * @param {array<comment>} comments
  * @param {number} increment
  */
-const appendComments = (comments, increment) => {
+const getCommentIncrementor = (comments, increment) => {
   let count = increment;
   return () => {
     const commentsFragment = document.createDocumentFragment();
@@ -60,7 +60,7 @@ const configureModal = (cardInfo) => {
   modal.el.querySelector('.likes-count').textContent = cardInfo.likes;
   modal.el.querySelector('.social__caption').textContent = cardInfo.description;
   modal.el.querySelector('.comments-count').textContent = cardInfo.comments.length;
-  const incrementComments = appendComments(cardInfo.comments, COMMENT_VIEW_INCREMENT);
+  const incrementComments = getCommentIncrementor(cardInfo.comments, COMMENT_INCREMENT_COUNT);
   incrementComments();
   modal.addListener(modal.el.querySelector('.comments-loader'), 'click', incrementComments);
 };

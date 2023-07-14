@@ -24,7 +24,6 @@ const uploadImageHandler = () => {
 
 form.filename.addEventListener('change', uploadImageHandler);
 modal.onClose = () => form.reset();
-
 modal.addListener(form.hashtags, 'input', trimTwoSpaces);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();

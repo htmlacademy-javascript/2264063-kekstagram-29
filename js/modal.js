@@ -6,6 +6,8 @@ export class Modal {
   constructor(modalElement) {
     this.el = modalElement;
     this.listeners = [];
+    this.onClose = () => {
+    };
   }
 
   /**
@@ -16,6 +18,7 @@ export class Modal {
     const isOverlay = evt.target.classList.contains('overlay');
     const isCloseButton = evt.target.classList.contains('cancel');
     if (isOverlay || isCloseButton || evt.key === 'Escape') {
+      this.onClose(this);
       this.close();
       this.listeners.forEach((remove) => remove());
       this.listeners = [];
@@ -39,7 +42,7 @@ export class Modal {
   open() {
     this.el.classList.remove('hidden');
     document.body.classList.add('modal-open');
-    this.addListener(this.el, 'click', this.#closeHandler.bind(this));
+    this.addListener(this.el, 'pointerdown', this.#closeHandler.bind(this));
     this.addListener(document, 'keydown', this.#closeHandler.bind(this));
   }
 

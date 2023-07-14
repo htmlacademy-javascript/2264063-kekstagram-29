@@ -1,9 +1,8 @@
 import {Modal} from './modal.js';
 import {getCloneFromTemplate} from './utils.js';
 
-const modalElement = document.querySelector('.big-picture');
 const COMMENT_VIEW_INCREMENT = 5;
-const modal = new Modal(modalElement);
+const modal = new Modal(document.querySelector('.big-picture'));
 
 /**
  * Создаёт ноду комментария

@@ -7,8 +7,9 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кекстаграм</title>
-  <script src="./js/main.js" type="module" defer></script>
+  <script src="./vendor/pristine/pristine.min.js" defer></script>
   <script src="./js/functions.js" defer></script>
+  <script src="./js/main.js" type="module" defer></script>
 </head>
 <body>
 <main>
@@ -35,12 +36,12 @@
 
           <!-- Изначальное состояние поля для загрузки изображения -->
           <fieldset class="img-upload__start">
-            <input type="file" id="upload-file" class="img-upload__input  visually-hidden" name="filename" required>
+            <input type="file" id="upload-file" class="img-upload__input  visually-hidden" accept="image/png, image/jpeg" name="filename" required>
             <label for="upload-file" class="img-upload__label  img-upload__control">Загрузить</label>
           </fieldset>
 
           <!-- Форма редактирования изображения -->
-          <div class="img-upload__overlay  hidden">
+          <div class="img-upload__overlay overlay  hidden">
             <div class="img-upload__wrapper">
               <div class="img-upload__preview-container">
 
@@ -120,7 +121,7 @@
                   <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
                 </div>
                 <div class="img-upload__field-wrapper">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </div>
               </fieldset>
 
@@ -214,10 +215,10 @@
 
 <!-- Шаблон комментария -->
 <template id="comment">
-<li class="social__comment">
-  <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-  <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
-</li>
+  <li class="social__comment">
+    <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
+    <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
+  </li>
 </template>
 
 <!-- Сообщение с ошибкой загрузки изображения -->

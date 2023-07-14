@@ -75,7 +75,7 @@ const setSliderOptions = (step, min, max) => {
   effectSlider.updateOptions({step, range: {'min': min, 'max': max}, start: 100});
 };
 
-const setSliderEffect = {
+const configureSlider = {
   'none': () => {
     picture.style.filter = 'none';
     sliderNode.style.display = 'none';
@@ -91,8 +91,8 @@ const setSliderEffect = {
  * Инициирует слайдер и кнопки смены эффектов
  */
 const initEffectChanger = () => {
-  setSliderEffect[effectsInputs.value]();
-  effectsInputs.forEach((input) => modal.addListener(input, 'change', () => setSliderEffect[effectsInputs.value]()));
+  configureSlider[effectsInputs.value]();
+  effectsInputs.forEach((input) => modal.addListener(input, 'change', () => configureSlider[effectsInputs.value]()));
 };
 
 /**

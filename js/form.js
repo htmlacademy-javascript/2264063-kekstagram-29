@@ -77,11 +77,8 @@ pristine.addValidator(form.hashtags, isValidHashtags, 'Введен невали
 pristine.addValidator(form.hashtags, isHashtagsDontRepeat, 'Хэштеги не должны повторяться');
 
 form.filename.addEventListener('change', uploadImageHandler);
-modal.onClose = () => {
-  form.filename.value = '';
-  form.hashtags.value = '';
-  form.description.value = '';
-};
+modal.onClose = () => form.reset();
+
 modal.addListener(form.hashtags, 'input', hashtagsInputHandler);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();

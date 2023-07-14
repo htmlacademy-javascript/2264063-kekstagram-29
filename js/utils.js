@@ -97,6 +97,7 @@ export const getCloneFromTemplate = (templateId) => document.querySelector(templ
 
 /**
  * Запрещает вводить 2 пробела подряд
+ * @param evt {InputEvent}
  */
 export const trimTwoSpaces = (evt) => {
   const str = evt.target.value;

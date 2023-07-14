@@ -38,9 +38,6 @@ const getCommentIncrementor = (comments, increment) => {
       commentsCountStart.textContent = comments.length;
       commentsLoader.classList.add('hidden');
     }
-    if (comments.length === 0) {
-      commentsContainer.innerHTML = '<p style="text-align: center">Комментариев пока нет :(<p>';
-    }
     commentsContainer.innerHTML = '';
     for (let i = 0; i < Math.min(count, comments.length); i++) {
       commentsFragment.append(createComment(comments[i]));

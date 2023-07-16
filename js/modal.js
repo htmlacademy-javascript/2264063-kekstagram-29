@@ -1,5 +1,4 @@
-import {isNodem isElement} from './utils.js';
-import {isNode} from './utils.js';
+import {isNode, isElement} from './utils.js';
 
 /**
  * Класс модального окна

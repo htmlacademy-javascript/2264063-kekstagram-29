@@ -1,7 +1,7 @@
 import {Modal} from './modal.js';
 import {trimTwoSpaces} from './utils.js';
-import './validation.js';
-import {validate} from './validation.js';
+import './image-upload-form-validator.js';
+import {validateUploadImageForm} from './image-upload-form-validator.js';
 
 const form = document.querySelector('#upload-select-image');
 const picture = form.querySelector('.img-upload__preview img');
@@ -105,7 +105,7 @@ const uploadImageHandler = () => {
   modal.addListener(...stopPropagation(form.description));
   modal.addListener(...stopPropagation(form.hashtags));
   modal.addListener(form.querySelector('.scale'), 'click', scaleButtonHandler);
-  form.querySelector('.img-upload__submit').disabled = !validate();
+  form.querySelector('.img-upload__submit').disabled = !validateUploadImageForm();
 };
 
 /**
@@ -114,7 +114,7 @@ const uploadImageHandler = () => {
  */
 const hashtagInputHandler = (evt) => {
   trimTwoSpaces(evt);
-  form.querySelector('.img-upload__submit').disabled = !validate();
+  form.querySelector('.img-upload__submit').disabled = !validateUploadImageForm();
 };
 
 effectSlider.on('update', (value) => {

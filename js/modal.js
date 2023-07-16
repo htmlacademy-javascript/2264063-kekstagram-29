@@ -4,7 +4,7 @@
  */
 export class Modal {
   constructor(modalElement) {
-    if (!modalElement.nodeName) {
+    if (!modalElement.tagName) {
       throw Error(`${modalElement} is not a HTML Element or Node`);
     }
     this.el = modalElement;

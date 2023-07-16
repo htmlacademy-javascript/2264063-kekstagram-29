@@ -17,7 +17,7 @@ const createComment = (commentData) => {
     template.querySelector('.social__text').textContent = commentData.message;
     return template;
   }
-  return null
+  return null;
 };
 
 /**

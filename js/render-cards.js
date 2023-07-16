@@ -18,7 +18,7 @@ const createCard = ({url, description, likes, comments}) => {
     template.querySelector('.picture__comments').textContent = comments.length;
     return template;
   }
-  throw new Error('Template does not exist.');
+  return null;
 };
 
 /**

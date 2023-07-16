@@ -4,6 +4,9 @@
  */
 export class Modal {
   constructor(modalElement) {
+    if (!modalElement.nodeName) {
+      throw Error(`${modalElement} is not a HTML Element or Node`);
+    }
     this.el = modalElement;
     this.listeners = [];
     this.onClose = () => {

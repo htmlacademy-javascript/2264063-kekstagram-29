@@ -22,15 +22,7 @@ const isValidHashtagsCount = (value) => value.trim().split(' ').length <= HASHTA
  * @param value {string} - строка из поля ввода
  * @return {boolean}
  */
-const isValidHashtags = (value) => {
-  const hashtagsArray = value.split(' ');
-  for (let i = 0; i < hashtagsArray.length; i++) {
-    if (!(/^#[a-zа-яё0-9]{1,19}$/i.test(hashtagsArray[i])) && hashtagsArray[i] !== '') {
-      return false;
-    }
-  }
-  return true;
-};
+const isValidHashtags = (value) => value === '' || value.trim().split(' ').every((hashtag) => (/^#[a-zа-яё0-9]{1,19}$/i.test(hashtag)));
 
 /**
  * Проверяет что нет одинаковых хэштегов

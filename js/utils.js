@@ -93,3 +93,15 @@ export const getRandomElementFromArray = (arr) => arr[getRandomInteger(0, arr.le
  * @return {HTMLElement | Null}
  */
 export const getCloneFromTemplate = (templateId) => document.querySelector(templateId) ? document.querySelector(templateId).content.children[0].cloneNode(true) : null;
+
+
+/**
+ * Запрещает вводить 2 пробела подряд
+ * @param evt {InputEvent}
+ */
+export const trimTwoSpaces = (evt) => {
+  const str = evt.target.value;
+  if (str[str.length - 1] + str[str.length - 2] === '  ') {
+    evt.target.value = `${str.trim()} `;
+  }
+};

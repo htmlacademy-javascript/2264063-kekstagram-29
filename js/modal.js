@@ -1,10 +1,12 @@
+import {isNode, isElement} from './utils.js';
+
 /**
  * Класс модального окна
  * @param {HTMLElement} modalElement - нода модального окна
  */
 export class Modal {
   constructor(modalElement) {
-    if (!modalElement.nodeName) {
+    if (!(isElement(modalElement) && isNode(modalElement))) {
       throw Error(`${modalElement} is not a HTML Element or Node`);
     }
     this.el = modalElement;

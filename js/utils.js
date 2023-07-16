@@ -105,3 +105,21 @@ export const trimTwoSpaces = (evt) => {
     evt.target.value = `${str.trim()} `;
   }
 };
+
+/**
+ * Проверка на Node элемент
+ * @param o {any}
+ * @return {boolean}
+ */
+export const isNode = (o) => (
+  typeof Node === 'object' ? o instanceof Node :
+    o && typeof o === 'object' && typeof o.nodeType === 'number' && typeof o.nodeName === 'string');
+
+/**
+ * Проверка на HTML элемент
+ * @param o {any}
+ * @return {boolean}
+ */
+export const isElement = (o) => (
+  typeof HTMLElement === 'object' ? o instanceof HTMLElement :
+    o && typeof o === 'object' && o && o.nodeType === 1 && typeof o.nodeName === 'string');

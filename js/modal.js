@@ -5,7 +5,7 @@ const modals = [];
 /**
  * Класс модального окна
  * @param {HTMLElement} modalElement - нода модального окна
- * @param {array} closeElements - массив с элементами, по клику на которые модальное окно должно закрываться
+ * @param {array<HTMLElement>} closeElements - массив с элементами, по клику на которые модальное окно должно закрываться
  */
 export class Modal {
   constructor(modalElement, closeElements) {
@@ -16,7 +16,7 @@ export class Modal {
     modals.push(this);
     this.layer = 0;
     this.listeners = [];
-    this.closeElements = closeElements;
+    this.closeElements = closeElements || [];
     this.onClose = () => {
     };
   }

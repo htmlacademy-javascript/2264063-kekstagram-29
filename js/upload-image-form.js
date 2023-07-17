@@ -26,7 +26,7 @@ const effectSlider = noUiSlider.create(sliderNode, {
   }
 });
 
-const Effects = {
+const Effect = {
   NONE: 'none',
   CHROME: 'chrome',
   SEPIA: 'sepia',
@@ -36,13 +36,13 @@ const Effects = {
 };
 
 const setEffect = {
-  [Effects.NONE]: () => {
+  [Effect.NONE]: () => {
   },
-  [Effects.CHROME]: (value) => (picture.style.filter = `grayscale(${value})`),
-  [Effects.SEPIA]: (value) => (picture.style.filter = `sepia(${value})`),
-  [Effects.MARVIN]: (value) => (picture.style.filter = `invert(${value}%)`),
-  [Effects.PHOBOS]: (value) => (picture.style.filter = `blur(${value}px)`),
-  [Effects.HEAT]: (value) => (picture.style.filter = `brightness(${value})`),
+  [Effect.CHROME]: (value) => (picture.style.filter = `grayscale(${value})`),
+  [Effect.SEPIA]: (value) => (picture.style.filter = `sepia(${value})`),
+  [Effect.MARVIN]: (value) => (picture.style.filter = `invert(${value}%)`),
+  [Effect.PHOBOS]: (value) => (picture.style.filter = `blur(${value}px)`),
+  [Effect.HEAT]: (value) => (picture.style.filter = `brightness(${value})`),
 };
 
 
@@ -92,15 +92,15 @@ const setSliderOptions = (step, min, max) => {
 };
 
 const configureSlider = {
-  [Effects.NONE]: () => {
+  [Effect.NONE]: () => {
     picture.style.filter = 'none';
     sliderNode.style.display = 'none';
   },
-  [Effects.CHROME]: () => setSliderOptions(0.1, 0, 1),
-  [Effects.SEPIA]: () => setSliderOptions(0.1, 0, 1),
-  [Effects.MARVIN]: () => setSliderOptions(1, 0, 100),
-  [Effects.PHOBOS]: () => setSliderOptions(0.1, 0, 3),
-  [Effects.HEAT]: () => setSliderOptions(0.1, 1, 3),
+  [Effect.CHROME]: () => setSliderOptions(0.1, 0, 1),
+  [Effect.SEPIA]: () => setSliderOptions(0.1, 0, 1),
+  [Effect.MARVIN]: () => setSliderOptions(1, 0, 100),
+  [Effect.PHOBOS]: () => setSliderOptions(0.1, 0, 3),
+  [Effect.HEAT]: () => setSliderOptions(0.1, 1, 3),
 };
 
 /**

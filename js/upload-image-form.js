@@ -130,7 +130,14 @@ const uploadImageHandler = () => {
  */
 const hashtagInputHandler = (evt) => {
   trimTwoSpaces(evt);
-  form.querySelector('.img-upload__submit').disabled = !validateUploadImageForm();
+  submitButton.disabled = !validateUploadImageForm();
+};
+
+/**
+ * Обработчик ввода в поле комментариев
+ */
+const commentInputHandler = () => {
+  submitButton.disabled = !validateUploadImageForm();
 };
 
 /**
@@ -156,6 +163,7 @@ effectSlider.on('update', (value) => {
 form.filename.addEventListener('change', uploadImageHandler);
 modal.onClose = () => form.reset();
 modal.addListener(form.hashtags, 'input', hashtagInputHandler);
+modal.addListener(form.description, 'input', commentInputHandler);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   disableSubmitButton();

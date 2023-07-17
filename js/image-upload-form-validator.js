@@ -37,5 +37,4 @@ const isHashtagsDontRepeat = (value) => {
 pristine.addValidator(form.hashtags, isValidHashtagsCount, `Максимум ${HASHTAGS_LIMIT} хэштегов`);
 pristine.addValidator(form.hashtags, isValidHashtags, 'Введен невалидный хэштег');
 pristine.addValidator(form.hashtags, isHashtagsDontRepeat, 'Хэштеги не должны повторяться');
-
 export const validateUploadImageForm = () => pristine.validate();

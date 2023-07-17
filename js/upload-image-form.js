@@ -2,13 +2,21 @@ import {Modal} from './modal.js';
 import {trimTwoSpaces} from './utils.js';
 import './image-upload-form-validator.js';
 import {validateUploadImageForm} from './image-upload-form-validator.js';
+import {sendData} from './api.js';
+import {showFormError} from './show-form-error.js';
+import {showFormSuccess} from './show-form-success.js';
 
 const form = document.querySelector('#upload-select-image');
 const picture = form.querySelector('.img-upload__preview img');
 const sliderNode = form.querySelector('.effect-level__slider');
 const effectsInputs = form.effect;
+const submitButton = form.querySelector('.img-upload__submit');
 
-const modal = new Modal(form.querySelector('.img-upload__overlay'));
+
+const modal = new Modal(form.querySelector('.img-upload__overlay'), [
+  form.querySelector('.img-upload__overlay'),
+  form.querySelector('.img-upload__cancel')
+]);
 const effectSlider = noUiSlider.create(sliderNode, {
   start: 100,
   connect: 'lower',
@@ -53,7 +61,6 @@ const scaleButtonHandler = (evt) => {
  */
 const initPicture = () => {
   picture.style.transform = 'scale(1)';
-
   // вставка новой картинки в предпросмотр и превью эффектов
 };
 
@@ -117,6 +124,22 @@ const hashtagInputHandler = (evt) => {
   form.querySelector('.img-upload__submit').disabled = !validateUploadImageForm();
 };
 
+/**
+ * Выключает кнопку отправки формы
+ */
+const disableSubmitButton = () => {
+  submitButton.textContent = 'Публикуем...';
+  submitButton.disabled = true;
+};
+
+/**
+ * Включает кнопку отправки формы
+ */
+const enableSubmitButton = () => {
+  submitButton.textContent = 'Опубликовать';
+  submitButton.disabled = false;
+};
+
 effectSlider.on('update', (value) => {
   setEffect[effectsInputs.value](+value[0]);
   form['effect-level'].value = +value[0];
@@ -126,5 +149,12 @@ modal.onClose = () => form.reset();
 modal.addListener(form.hashtags, 'input', hashtagInputHandler);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  // отправка данных
+  disableSubmitButton();
+  sendData(new FormData(evt.target))
+    .then(() => {
+      showFormSuccess();
+      modal.close();
+    })
+    .catch(() => showFormError())
+    .finally(() => enableSubmitButton());
 });

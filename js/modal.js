@@ -1,32 +1,43 @@
 import {isNode, isElement} from './utils.js';
 
+const modals = [];
+
 /**
  * Класс модального окна
  * @param {HTMLElement} modalElement - нода модального окна
+ * @param {array} closeElements - массив с элементами, по клику на которые модальное окно должно закрываться
  */
 export class Modal {
-  constructor(modalElement) {
+  constructor(modalElement, closeElements) {
     if (!(isElement(modalElement) && isNode(modalElement))) {
       throw Error(`${modalElement} is not a HTML Element or Node`);
     }
     this.el = modalElement;
+    modals.push(this);
+    this.layer = 0;
     this.listeners = [];
+    this.closeElements = closeElements;
     this.onClose = () => {
     };
   }
 
   /**
-   * Обработчик закрытия модального окна
-   * @param {Event | KeyboardEvent} evt
+   * Обработчик закрытия модального окна по клику
+   * @param {MouseEvent} evt
    */
-  #closeHandler(evt) {
-    const isOverlay = evt.target.classList.contains('overlay');
-    const isCloseButton = evt.target.classList.contains('cancel');
-    if (isOverlay || isCloseButton || evt.key === 'Escape') {
-      this.onClose(this);
-      this.close();
-      this.listeners.forEach((remove) => remove());
-      this.listeners = [];
+  #closeFromClickHandler(evt) {
+    this.closeElements.forEach((element) => (evt.target === element) && this.close());
+  }
+
+  /**
+   * Обработчик закрытия модального окна по нажатию Esc
+   * @param {KeyboardEvent} evt
+   */
+  #closeFromEscHandler(evt) {
+    if (evt.key === 'Escape') {
+      if (this.layer === Math.max(...modals.map((modal) => modal.layer))) {
+        this.close();
+      }
     }
   }
 
@@ -47,15 +58,20 @@ export class Modal {
   open() {
     this.el.classList.remove('hidden');
     document.body.classList.add('modal-open');
-    this.addListener(this.el, 'pointerdown', this.#closeHandler.bind(this));
-    this.addListener(document, 'keydown', this.#closeHandler.bind(this));
+    this.addListener(this.el, 'pointerdown', this.#closeFromClickHandler.bind(this));
+    this.addListener(document, 'keydown', this.#closeFromEscHandler.bind(this));
+    this.layer = Math.max(...modals.map((modal) => modal.layer)) + 1;
   }
 
   /**
    * Закрывает модальное окно
    */
   close() {
+    this.onClose();
     document.body.classList.remove('modal-open');
     this.el.classList.add('hidden');
+    this.layer = 0;
+    this.listeners.forEach((remove) => remove());
+    this.listeners = [];
   }
 }

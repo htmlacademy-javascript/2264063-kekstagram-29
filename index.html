@@ -10,7 +10,6 @@
   <title>Кекстаграм</title>
   <script src="./vendor/pristine/pristine.min.js" type="text/javascript" defer></script>
   <script src="./vendor/nouislider/nouislider.js" type="text/javascript" defer></script>
-  <script src="./js/functions.js" defer></script>
   <script src="./js/main.js" type="module" defer></script>
 </head>
 <body>
@@ -42,8 +41,8 @@
             <label for="upload-file" class="img-upload__label  img-upload__control">Загрузить</label>
           </fieldset>
 
-<!--          Форма редактирования изображения-->
-          <div class="img-upload__overlay overlay  hidden">
+          <!--          Форма редактирования изображения-->
+          <div class="img-upload__overlay hidden">
             <div class="img-upload__wrapper">
               <div class="img-upload__preview-container">
 
@@ -61,7 +60,7 @@
 
                 <!-- Изменение глубины эффекта, накладываемого на изображение -->
                 <fieldset class="img-upload__effect-level  effect-level">
-                  <input class="effect-level__value" type="range" step="0.1"  name="effect-level" value="100">
+                  <input class="effect-level__value" type="range" step="0.1" name="effect-level" value="100">
                   <div class="effect-level__slider"></div>
                 </fieldset>
 
@@ -123,7 +122,7 @@
                   <input class="text__hashtags" name="hashtags" type="text" placeholder="#ХэшТег">
                 </div>
                 <div class="img-upload__field-wrapper">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." data-pristine-maxlength="140" data-pristine-maxlength-message="Комментарий слишком длинный"></textarea>
                 </div>
               </fieldset>
 

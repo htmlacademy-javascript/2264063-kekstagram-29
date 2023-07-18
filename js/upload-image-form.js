@@ -2,13 +2,21 @@ import {Modal} from './modal.js';
 import {trimTwoSpaces} from './utils.js';
 import './image-upload-form-validator.js';
 import {validateUploadImageForm} from './image-upload-form-validator.js';
+import {sendData} from './api.js';
+import {showFormError} from './show-form-error.js';
+import {showFormSuccess} from './show-form-success.js';
 
 const form = document.querySelector('#upload-select-image');
 const picture = form.querySelector('.img-upload__preview img');
 const sliderNode = form.querySelector('.effect-level__slider');
 const effectsInputs = form.effect;
+const submitButton = form.querySelector('.img-upload__submit');
 
-const modal = new Modal(form.querySelector('.img-upload__overlay'));
+
+const modal = new Modal(form.querySelector('.img-upload__overlay'), [
+  form.querySelector('.img-upload__overlay'),
+  form.querySelector('.img-upload__cancel')
+]);
 const effectSlider = noUiSlider.create(sliderNode, {
   start: 100,
   connect: 'lower',
@@ -18,14 +26,23 @@ const effectSlider = noUiSlider.create(sliderNode, {
   }
 });
 
+const Effect = {
+  NONE: 'none',
+  CHROME: 'chrome',
+  SEPIA: 'sepia',
+  MARVIN: 'marvin',
+  PHOBOS: 'phobos',
+  HEAT: 'heat',
+};
+
 const setEffect = {
-  'none': () => {
+  [Effect.NONE]: () => {
   },
-  'chrome': (value) => (picture.style.filter = `grayscale(${value})`),
-  'sepia': (value) => (picture.style.filter = `sepia(${value})`),
-  'marvin': (value) => (picture.style.filter = `invert(${value}%)`),
-  'phobos': (value) => (picture.style.filter = `blur(${value}px)`),
-  'heat': (value) => (picture.style.filter = `brightness(${value})`),
+  [Effect.CHROME]: (value) => (picture.style.filter = `grayscale(${value})`),
+  [Effect.SEPIA]: (value) => (picture.style.filter = `sepia(${value})`),
+  [Effect.MARVIN]: (value) => (picture.style.filter = `invert(${value}%)`),
+  [Effect.PHOBOS]: (value) => (picture.style.filter = `blur(${value}px)`),
+  [Effect.HEAT]: (value) => (picture.style.filter = `brightness(${value})`),
 };
 
 
@@ -53,7 +70,6 @@ const scaleButtonHandler = (evt) => {
  */
 const initPicture = () => {
   picture.style.transform = 'scale(1)';
-
   // вставка новой картинки в предпросмотр и превью эффектов
 };
 
@@ -76,15 +92,15 @@ const setSliderOptions = (step, min, max) => {
 };
 
 const configureSlider = {
-  'none': () => {
+  [Effect.NONE]: () => {
     picture.style.filter = 'none';
     sliderNode.style.display = 'none';
   },
-  'chrome': () => setSliderOptions(0.1, 0, 1),
-  'sepia': () => setSliderOptions(0.1, 0, 1),
-  'marvin': () => setSliderOptions(1, 0, 100),
-  'phobos': () => setSliderOptions(0.1, 0, 3),
-  'heat': () => setSliderOptions(0.1, 1, 3),
+  [Effect.CHROME]: () => setSliderOptions(0.1, 0, 1),
+  [Effect.SEPIA]: () => setSliderOptions(0.1, 0, 1),
+  [Effect.MARVIN]: () => setSliderOptions(1, 0, 100),
+  [Effect.PHOBOS]: () => setSliderOptions(0.1, 0, 3),
+  [Effect.HEAT]: () => setSliderOptions(0.1, 1, 3),
 };
 
 /**
@@ -114,7 +130,30 @@ const uploadImageHandler = () => {
  */
 const hashtagInputHandler = (evt) => {
   trimTwoSpaces(evt);
-  form.querySelector('.img-upload__submit').disabled = !validateUploadImageForm();
+  submitButton.disabled = !validateUploadImageForm();
+};
+
+/**
+ * Обработчик ввода в поле комментариев
+ */
+const commentInputHandler = () => {
+  submitButton.disabled = !validateUploadImageForm();
+};
+
+/**
+ * Выключает кнопку отправки формы
+ */
+const disableSubmitButton = () => {
+  submitButton.textContent = 'Публикуем...';
+  submitButton.disabled = true;
+};
+
+/**
+ * Включает кнопку отправки формы
+ */
+const enableSubmitButton = () => {
+  submitButton.textContent = 'Опубликовать';
+  submitButton.disabled = false;
 };
 
 effectSlider.on('update', (value) => {
@@ -124,7 +163,15 @@ effectSlider.on('update', (value) => {
 form.filename.addEventListener('change', uploadImageHandler);
 modal.onClose = () => form.reset();
 modal.addListener(form.hashtags, 'input', hashtagInputHandler);
+modal.addListener(form.description, 'input', commentInputHandler);
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  // отправка данных
+  disableSubmitButton();
+  sendData(new FormData(evt.target))
+    .then(() => {
+      showFormSuccess();
+      modal.close();
+    })
+    .catch(() => showFormError())
+    .finally(() => enableSubmitButton());
 });

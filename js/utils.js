@@ -1,93 +1,4 @@
 /**
- * Проверка строки на соответствие длине
- * @param checkingString {string} - Проверяемая строка
- * @param countOfChars {number} - Максимальная длина строки
- * @return {boolean}
- */
-export const isValidString = (checkingString, countOfChars) => checkingString.length <= countOfChars;
-
-/**
- * Проверка строки на палиндром
- * @param string {string} - Проверяемая строка
- * @return {boolean}
- */
-export const isPalindrome = (string) => {
-  let result = true;
-  string = string.replaceAll(' ', '');
-  for (let i = 0; i < string.length / 2; i++) {
-    if (!(string[i] === string[string.length - 1 - i])) {
-      result = false;
-      break;
-    }
-  }
-  return result;
-};
-
-/**
- * Извлечение числа из строки
- * @param string {string | number}
- * @return {number}
- */
-export const extractNumbers = (string) => {
-  const result = [];
-  for (const char of string.toString().replaceAll(' ', '')) {
-    if (!isNaN(+char)) {
-      result.push(char);
-    }
-  }
-  return result.length ? +result.join('') : NaN;
-};
-
-/**
- * Случайное число в заданном диапазоне включая min и max
- * @param min {number}
- * @param max {number}
- * @return {number}
- */
-export const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-/**
- * Создаёт генератор уникальных чисел начиная со start
- * @param start {number}
- * @return {() => number}
- */
-export const getUniqueInteger = (start = 0) => () => start++;
-
-/**
- * Создаёт генератор уникальных чисел в диапазоне [min ... max], включая min и max
- * @param min {number}
- * @param max {number}
- * @return {() => number}
- */
-export const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-};
-
-/**
- * Возвращает случайный элемент из переданного массива
- * @param arr {array}
- * @return {*}
- */
-export const getRandomElementFromArray = (arr) => arr[getRandomInteger(0, arr.length - 1)];
-
-
-/**
  * Возвращает склонированное содержимое шаблона
  * @param templateId {string}
  * @return {HTMLElement | Null}
@@ -123,3 +34,24 @@ export const isNode = (o) => (
 export const isElement = (o) => (
   typeof HTMLElement === 'object' ? o instanceof HTMLElement :
     o && typeof o === 'object' && o && o.nodeType === 1 && typeof o.nodeName === 'string');
+
+/**
+ * Рендерит на страницу переданное сообщение
+ * @param message {string}
+ */
+export const showAlert = (message) => {
+  const alert = document.createElement('div');
+  alert.style.position = 'fixed';
+  alert.style.inset = '0';
+  alert.style.border = '5px solid tomato';
+  alert.style.color = 'tomato';
+  alert.style.padding = '1em';
+  alert.style.fontSize = '20px';
+  alert.style.fontWeight = '700';
+  alert.style.textTransform = 'uppercase';
+  alert.style.zIndex = '1000';
+  alert.style.pointerEvents = 'none';
+  alert.innerText = message;
+  document.body.append(alert);
+  setTimeout(() => alert.remove(), 3000);
+};

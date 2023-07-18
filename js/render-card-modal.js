@@ -1,8 +1,28 @@
+/**
+ * @typedef {object} card
+ * @property {number} id,
+ * @property {string} url,
+ * @property {string} description,
+ * @property {number} likes,
+ * @property {array <comment>=} comments
+ */
+
+/**
+ * @typedef {object} comment
+ * @property {number} id,
+ * @property {string} avatar,
+ * @property {string} message,
+ * @property {string} name
+ */
+
 import {Modal} from './modal.js';
 import {getCloneFromTemplate} from './utils.js';
 
 const COMMENT_INCREMENT_COUNT = 5;
-const modal = new Modal(document.querySelector('.big-picture'));
+const modal = new Modal(document.querySelector('.big-picture'), [
+  document.querySelector('.big-picture'),
+  document.querySelector('.big-picture__cancel')
+]);
 
 /**
  * Создаёт ноду комментария

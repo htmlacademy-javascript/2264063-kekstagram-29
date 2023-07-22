@@ -2,7 +2,7 @@ import {renderCards} from './render-cards.js';
 import {createRandomIdFromRangeGenerator, debounce} from './utils.js';
 
 const filterWrapper = document.querySelector('.img-filters');
-const RENDER_DELAY = 300;
+const RENDER_DELAY = 500;
 const RANDOM_CARDS_COUNT = 10;
 
 /**

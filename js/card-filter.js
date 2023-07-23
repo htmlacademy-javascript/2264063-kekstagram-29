@@ -4,6 +4,11 @@ import {createRandomIdFromRangeGenerator, debounce} from './utils.js';
 const filterWrapper = document.querySelector('.img-filters');
 const RENDER_DELAY = 500;
 const RANDOM_CARDS_COUNT = 10;
+const Filter = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  POPULAR: 'filter-discussed',
+};
 
 /**
  * Вешает обработчик клика на кнопки фильтра
@@ -25,12 +30,6 @@ const setButtonsClickHandle = (cb) => {
  * @param b {card}
  */
 const compareByCommentsCount = (a, b) => b.comments.length - a.comments.length;
-
-const Filter = {
-  DEFAULT: 'filter-default',
-  RANDOM: 'filter-random',
-  POPULAR: 'filter-discussed',
-};
 
 /**
  * Возвращает массив случайных постов

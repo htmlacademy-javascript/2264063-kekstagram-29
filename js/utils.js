@@ -103,3 +103,10 @@ export const createRandomIdFromRangeGenerator = (min, max) => {
     return currentValue;
   };
 };
+
+/**
+ * Извлекает число из строки (также дробное и отрицательно)
+ * @param str {string}
+ * @return {number}
+ */
+export const extractNumber = (str) => +/-?\d+(?:\.\d+)?/g.exec(str);

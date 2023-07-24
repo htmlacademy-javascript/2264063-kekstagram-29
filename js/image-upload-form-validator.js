@@ -1,4 +1,10 @@
 const HASHTAGS_LIMIT = 5;
+const HASHTAG_REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
+const HashtagMessage = {
+  LIMIT: `Максимум ${HASHTAGS_LIMIT} хэштегов`,
+  WRONG: 'Введен невалидный хэштег',
+  REPEAT: 'Хэштеги не должны повторяться',
+};
 
 const form = document.querySelector('#upload-select-image');
 const pristine = new Pristine(form, {
@@ -22,7 +28,7 @@ const isValidHashtagsCount = (value) => value.trim().split(' ').length <= HASHTA
  * @param value {string} - строка из поля ввода
  * @return {boolean}
  */
-const isValidHashtags = (value) => value === '' || value.trim().split(' ').every((hashtag) => (/^#[a-zа-яё0-9]{1,19}$/i.test(hashtag)));
+const isValidHashtags = (value) => value === '' || value.trim().split(' ').every((hashtag) => (HASHTAG_REGEXP.test(hashtag)));
 
 /**
  * Проверяет что нет одинаковых хэштегов
@@ -30,11 +36,12 @@ const isValidHashtags = (value) => value === '' || value.trim().split(' ').every
  * @return {boolean}
  */
 const isHashtagsDontRepeat = (value) => {
-  const hashtagsArray = value.trim().split(' ');
+  const hashtagsArray = value.toLowerCase().trim().split(' ');
   return new Set(hashtagsArray).size === hashtagsArray.length;
 };
 
-pristine.addValidator(form.hashtags, isValidHashtagsCount, `Максимум ${HASHTAGS_LIMIT} хэштегов`);
-pristine.addValidator(form.hashtags, isValidHashtags, 'Введен невалидный хэштег');
-pristine.addValidator(form.hashtags, isHashtagsDontRepeat, 'Хэштеги не должны повторяться');
-export const validateUploadImageForm = () => pristine.validate();
+pristine.addValidator(form.hashtags, isValidHashtagsCount, HashtagMessage.LIMIT);
+pristine.addValidator(form.hashtags, isValidHashtags, HashtagMessage.WRONG);
+pristine.addValidator(form.hashtags, isHashtagsDontRepeat, HashtagMessage.REPEAT);
+
+export {pristine};

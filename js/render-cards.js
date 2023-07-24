@@ -39,5 +39,9 @@ export const renderCards = (cardsData) => {
     });
     cards.append(card);
   });
+  const oldCards = cardsContainer.querySelectorAll('.picture');
+  if (oldCards.length > 0) {
+    oldCards.forEach((card) => card.remove());
+  }
   cardsContainer.append(cards);
 };

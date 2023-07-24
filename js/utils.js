@@ -55,3 +55,58 @@ export const showAlert = (message) => {
   document.body.append(alert);
   setTimeout(() => alert.remove(), 3000);
 };
+
+/**
+ * Вызывает коллбек при заданном времени бездействия
+ * @param callback {function}
+ * @param timeoutDelay {number}
+ * @return {function}
+ */
+export const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+/**
+ * Случайное число в заданном диапазоне включая min и max
+ * @param min {number}
+ * @param max {number}
+ * @return {number}
+ */
+export const getRandomInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+/**
+ * Создаёт генератор уникальных чисел в диапазоне [min ... max], включая min и max
+ * @param min {number}
+ * @param max {number}
+ * @return {() => number}
+ */
+export const createRandomIdFromRangeGenerator = (min, max) => {
+  const previousValues = [];
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
+/**
+ * Извлекает число из строки (также дробное и отрицательно)
+ * @param str {string}
+ * @return {number}
+ */
+export const extractNumber = (str) => +/-?\d+(?:\.\d+)?/g.exec(str);

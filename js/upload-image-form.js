@@ -13,10 +13,7 @@ const picture = form.querySelector('.img-upload__preview img');
 const effectItems = form.querySelectorAll('.effects__preview');
 const submitButton = form.querySelector('.img-upload__submit');
 
-const modal = new Modal(form.querySelector('.img-upload__overlay'), [
-  form.querySelector('.img-upload__overlay'),
-  form.querySelector('.img-upload__cancel')
-]);
+const modal = new Modal(form.querySelector('.img-upload__overlay'), [form.querySelector('.img-upload__cancel')]);
 
 /**
  * Валидирует расширение файла и возвращает путь к нему
@@ -49,8 +46,8 @@ const uploadImageHandler = (evt) => {
   modal.open();
   initPicture(evt.target.files[0]);
   initEffectChanger(modal);
-  modal.addListener(...stopPropagation(form.description));
   modal.addListener(...stopPropagation(form.hashtags));
+  modal.addListener(...stopPropagation(form.description));
   form.querySelector('.img-upload__submit').disabled = !pristine.validate();
 };
 
@@ -90,7 +87,6 @@ const enableSubmitButton = () => {
  */
 const formSubmitHandler = (evt) => {
   evt.preventDefault();
-  pristine.reset();
   disableSubmitButton();
   sendData(new FormData(evt.target))
     .then(() => {
@@ -106,6 +102,6 @@ modal.onClose = () => {
   form.reset();
   pristine.reset();
 };
-modal.addListener(form.hashtags, 'input', hashtagInputHandler);
-modal.addListener(form.description, 'input', commentInputHandler);
+form.hashtags.addEventListener('input', hashtagInputHandler);
+form.description.addEventListener('input', commentInputHandler);
 form.addEventListener('submit', formSubmitHandler);

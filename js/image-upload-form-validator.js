@@ -36,11 +36,12 @@ const isValidHashtags = (value) => value === '' || value.trim().split(' ').every
  * @return {boolean}
  */
 const isHashtagsDontRepeat = (value) => {
-  const hashtagsArray = value.trim().split(' ');
+  const hashtagsArray = value.toLowerCase().trim().split(' ');
   return new Set(hashtagsArray).size === hashtagsArray.length;
 };
 
 pristine.addValidator(form.hashtags, isValidHashtagsCount, HashtagMessage.LIMIT);
 pristine.addValidator(form.hashtags, isValidHashtags, HashtagMessage.WRONG);
 pristine.addValidator(form.hashtags, isHashtagsDontRepeat, HashtagMessage.REPEAT);
-export const validateUploadImageForm = () => pristine.validate();
+
+export {pristine};

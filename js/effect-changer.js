@@ -3,7 +3,7 @@ import {extractNumber} from './utils.js';
 const form = document.querySelector('#upload-select-image');
 const sliderNode = form.querySelector('.effect-level__slider');
 const picture = form.querySelector('.img-upload__preview img');
-const effectsInputs = form.effect;
+const effectInputs = form.effect;
 
 const PreviewScale = {
   MIN: 0.25,
@@ -49,7 +49,7 @@ const scaleButtonHandler = (evt) => {
   if (evt.target.classList.contains('scale__control--bigger') && (getScaleRate() < PreviewScale.MAX)) {
     picture.style.transform = `scale(${(getScaleRate() + PreviewScale.MIN)})`;
   }
-  form.scale.value = getScaleRate() * 100;
+  form.scale.value = `${getScaleRate() * 100}%`;
 };
 
 /**
@@ -59,14 +59,14 @@ const scaleButtonHandler = (evt) => {
  * @param max {number} - максимальное значение
  */
 const setSliderOptions = (step, min, max) => {
-  sliderNode.style.display = 'block';
+  form.querySelector('.effect-level').style.display = 'block';
   effectSlider.updateOptions({step, range: {min, max}, start: 100});
 };
 
 const configureSlider = {
   [Effect.NONE]: () => {
     picture.style.filter = 'none';
-    sliderNode.style.display = 'none';
+    form.querySelector('.effect-level').style.display = 'none';
   },
   [Effect.CHROME]: () => setSliderOptions(0.1, 0, 1),
   [Effect.SEPIA]: () => setSliderOptions(0.1, 0, 1),
@@ -76,8 +76,8 @@ const configureSlider = {
 };
 
 effectSlider.on('update', (value) => {
-  setEffect[effectsInputs.value](+value[0]);
-  form['effect-level'].value = +value[0];
+  setEffect[effectInputs.value](+value[0]);
+  form['effect-level'].value = value[0];
 });
 
 /**
@@ -85,7 +85,7 @@ effectSlider.on('update', (value) => {
  */
 export const initEffectChanger = (modal) => {
   picture.style.transform = `scale(${PreviewScale.MAX})`;
-  configureSlider[effectsInputs.value]();
-  effectsInputs.forEach((input) => modal.addListener(input, 'change', () => configureSlider[effectsInputs.value]()));
+  configureSlider[effectInputs.value]();
+  effectInputs.forEach((input) => modal.addListener(input, 'change', () => configureSlider[effectInputs.value]()));
   modal.addListener(form.querySelector('.scale'), 'click', scaleButtonHandler);
 };

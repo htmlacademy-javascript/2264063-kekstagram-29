@@ -1,7 +1,7 @@
 import {Modal} from './modal.js';
 import {trimTwoSpaces} from './utils.js';
 import './image-upload-form-validator.js';
-import {validateUploadImageForm} from './image-upload-form-validator.js';
+import {pristine} from './image-upload-form-validator.js';
 import {sendData} from './api.js';
 import {showSubmitMessage} from './show-submit-message.js';
 import {initEffectChanger} from './effect-changer.js';
@@ -51,7 +51,7 @@ const uploadImageHandler = (evt) => {
   initEffectChanger(modal);
   modal.addListener(...stopPropagation(form.description));
   modal.addListener(...stopPropagation(form.hashtags));
-  form.querySelector('.img-upload__submit').disabled = !validateUploadImageForm();
+  form.querySelector('.img-upload__submit').disabled = !pristine.validate();
 };
 
 /**
@@ -60,13 +60,13 @@ const uploadImageHandler = (evt) => {
  */
 const hashtagInputHandler = (evt) => {
   trimTwoSpaces(evt);
-  submitButton.disabled = !validateUploadImageForm();
+  submitButton.disabled = !pristine.validate();
 };
 
 /**
  * Обработчик ввода в поле комментариев
  */
-const commentInputHandler = () => (submitButton.disabled = !validateUploadImageForm());
+const commentInputHandler = () => (submitButton.disabled = !pristine.validate());
 
 /**
  * Выключает кнопку отправки формы
@@ -90,6 +90,7 @@ const enableSubmitButton = () => {
  */
 const formSubmitHandler = (evt) => {
   evt.preventDefault();
+  pristine.reset();
   disableSubmitButton();
   sendData(new FormData(evt.target))
     .then(() => {
@@ -101,7 +102,10 @@ const formSubmitHandler = (evt) => {
 };
 
 form.filename.addEventListener('change', uploadImageHandler);
-modal.onClose = () => form.reset();
+modal.onClose = () => {
+  form.reset();
+  pristine.reset();
+};
 modal.addListener(form.hashtags, 'input', hashtagInputHandler);
 modal.addListener(form.description, 'input', commentInputHandler);
 form.addEventListener('submit', formSubmitHandler);

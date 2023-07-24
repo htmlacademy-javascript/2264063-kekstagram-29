@@ -45,7 +45,7 @@ const getRandomCards = (cardsArray, count) => {
 const setFilter = {
   [Filter.DEFAULT]: (cards) => renderCards(cards),
   [Filter.RANDOM]: (cards) => renderCards(getRandomCards(cards, RANDOM_CARDS_COUNT)),
-  [Filter.POPULAR]: (cards) => renderCards(cards.toSorted(compareByCommentsCount)),
+  [Filter.POPULAR]: (cards) => renderCards([...cards].sort(compareByCommentsCount)),
 };
 
 /**

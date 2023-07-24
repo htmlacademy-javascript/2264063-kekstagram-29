@@ -3,5 +3,5 @@ import {getData} from './api.js';
 import {showAlert} from './utils.js';
 import {initCardFilter} from './card-filter.js';
 getData()
-  .then((cardsData) => initCardFilter(cardsData))
+  .then(initCardFilter)
   .catch((error) => showAlert(error.message));

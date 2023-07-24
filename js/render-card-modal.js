@@ -19,10 +19,7 @@ import {Modal} from './modal.js';
 import {getCloneFromTemplate} from './utils.js';
 
 const COMMENT_INCREMENT_COUNT = 5;
-const modal = new Modal(document.querySelector('.big-picture'), [
-  document.querySelector('.big-picture'),
-  document.querySelector('.big-picture__cancel')
-]);
+const modal = new Modal(document.querySelector('.big-picture'), [document.querySelector('.big-picture__cancel')]);
 
 /**
  * Создаёт ноду комментария

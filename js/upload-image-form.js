@@ -29,7 +29,9 @@ const checkExtAndGetPreviewPath = (file) => FILE_EXTENSIONS.some((ext) => file.n
 const initPicture = (file) => {
   const filePath = checkExtAndGetPreviewPath(file);
   picture.src = filePath;
-  effectItems.forEach((item) => (item.style.backgroundImage = `url("${filePath}")`));
+  effectItems.forEach((item) => {
+    item.style.backgroundImage = `url("${filePath}")`;
+  });
 };
 
 /**
@@ -66,19 +68,12 @@ const hashtagInputHandler = (evt) => {
 const commentInputHandler = () => (submitButton.disabled = !pristine.validate());
 
 /**
- * Выключает кнопку отправки формы
+ * Изменяет состояние кнопки
+ * @param state {boolean}
  */
-const disableSubmitButton = () => {
-  submitButton.textContent = 'Публикуем...';
-  submitButton.disabled = true;
-};
-
-/**
- * Включает кнопку отправки формы
- */
-const enableSubmitButton = () => {
-  submitButton.textContent = 'Опубликовать';
-  submitButton.disabled = false;
+const toggleSubmitButton = (state) => {
+  submitButton.disabled = !state;
+  submitButton.textContent = state ? 'Опубликовать' : 'Публикуем...';
 };
 
 /**
@@ -87,14 +82,14 @@ const enableSubmitButton = () => {
  */
 const formSubmitHandler = (evt) => {
   evt.preventDefault();
-  disableSubmitButton();
+  toggleSubmitButton(false);
   sendData(new FormData(evt.target))
     .then(() => {
       showSubmitMessage('success');
       modal.close();
     })
     .catch(() => showSubmitMessage('error'))
-    .finally(() => enableSubmitButton());
+    .finally(() => toggleSubmitButton(true));
 };
 
 form.filename.addEventListener('change', uploadImageHandler);
